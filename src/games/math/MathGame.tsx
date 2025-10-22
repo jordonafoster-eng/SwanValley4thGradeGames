@@ -72,8 +72,8 @@ const generateQuestion = (level: number): GameQuestion => {
 };
 
 export const MathGame = ({ onBack }: MathGameProps) => {
-  const { progress, addCorrectAnswer, addIncorrectAnswer } = useProgress('math');
   const { user, saveScore } = useUser();
+  const { progress, addCorrectAnswer, addIncorrectAnswer } = useProgress('math', user?.username);
   const [currentQuestion, setCurrentQuestion] = useState<GameQuestion>(() =>
     generateQuestion(progress.level)
   );

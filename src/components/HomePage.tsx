@@ -42,10 +42,10 @@ interface HomePageProps {
 
 export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) => {
   const { user, logout } = useUser();
-  const mathProgress = useProgress('math');
-  const readingProgress = useProgress('reading');
-  const scienceProgress = useProgress('science');
-  const logicProgress = useProgress('logic');
+  const mathProgress = useProgress('math', user?.username);
+  const readingProgress = useProgress('reading', user?.username);
+  const scienceProgress = useProgress('science', user?.username);
+  const logicProgress = useProgress('logic', user?.username);
 
   const progressMap = {
     math: mathProgress.progress,

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Subject, SubjectProgress, UserProgress } from '../types/games';
 
-const STORAGE_KEY = 'he4g_progress';
+const STORAGE_KEY_PREFIX = 'he4g_progress_';
 
 const createInitialProgress = (): UserProgress => ({
   level: 1,
@@ -18,15 +18,23 @@ const createInitialSubjectProgress = (): SubjectProgress => ({
   logic: createInitialProgress(),
 });
 
-export const useProgress = (subject: Subject) => {
+export const useProgress = (subject: Subject, username?: string) => {
+  const storageKey = username ? `${STORAGE_KEY_PREFIX}${username}` : `${STORAGE_KEY_PREFIX}guest`;
+
   const [progress, setProgress] = useState<SubjectProgress>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(storageKey);
     return saved ? JSON.parse(saved) : createInitialSubjectProgress();
   });
 
+  // Reset progress when username changes (different user logs in)
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  }, [progress]);
+    const saved = localStorage.getItem(storageKey);
+    setProgress(saved ? JSON.parse(saved) : createInitialSubjectProgress());
+  }, [storageKey]);
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(progress));
+  }, [progress, storageKey]);
 
   const addCorrectAnswer = () => {
     setProgress((prev) => {
