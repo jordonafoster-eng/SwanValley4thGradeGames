@@ -22,6 +22,7 @@
   height: 200%;
   background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
   animation: rotate 15s linear infinite;
+  z-index: 0;
 }
 
 @keyframes slideIn {
@@ -39,7 +40,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.login-bar.logged-in > * {
+  position: relative;
+  z-index: 1;
 }
 
 .login-form {
@@ -48,6 +54,8 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .login-label {
