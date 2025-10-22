@@ -1,10 +1,38 @@
 .login-bar {
-  background: white;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: 20px;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border: 3px solid #FFD700;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 0 0 3px #FFD700,
+    inset 0 0 30px rgba(255, 215, 0, 0.1);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.5s ease-out;
+}
+
+.login-bar::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+  animation: rotate 15s linear infinite;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .login-bar.logged-in {
@@ -46,19 +74,44 @@
 
 .login-button {
   padding: 0.75rem 1.5rem;
-  background: #FFD700;
+  background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
   color: #4B0082;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow:
+    0 4px 15px rgba(255, 215, 0, 0.4),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.login-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #FFC700 0%, #FFD700 100%);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+
+.login-button:hover:not(:disabled)::before {
+  opacity: 1;
 }
 
 .login-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 8px 25px rgba(255, 215, 0, 0.6),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .login-button:disabled {

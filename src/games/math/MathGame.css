@@ -6,13 +6,28 @@
 }
 
 .game-card {
-  background: white;
-  border-radius: 20px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 25px;
   padding: 3rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 3px #FFD700,
+    inset 0 0 40px rgba(255, 215, 0, 0.1);
   max-width: 600px;
   width: 100%;
   position: relative;
+  animation: cardEntry 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cardEntry {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .streak-badge {
@@ -46,7 +61,16 @@
 .question-text {
   font-size: 3.5rem;
   font-weight: bold;
-  color: #333;
+  background: linear-gradient(135deg, #5B2C6F 0%, #4B0082 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .equals-sign {
@@ -97,19 +121,43 @@
 .submit-button {
   font-size: 1.3rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
+  color: #4B0082;
   border: none;
-  border-radius: 12px;
+  border-radius: 15px;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow:
+    0 6px 20px rgba(255, 215, 0, 0.4),
+    inset 0 -3px 7px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.submit-button:hover:not(:disabled)::before {
+  width: 300px;
+  height: 300px;
 }
 
 .submit-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 10px 30px rgba(255, 215, 0, 0.6),
+    inset 0 -3px 7px rgba(0, 0, 0, 0.1);
 }
 
 .submit-button:disabled {
