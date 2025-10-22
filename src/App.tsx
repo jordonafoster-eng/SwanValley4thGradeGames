@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { HomePage } from './components/HomePage';
+import { MathGame } from './games/math/MathGame';
+import { Subject } from './types/games';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentSubject, setCurrentSubject] = useState<Subject | null>(null);
+
+  const handleSelectSubject = (subject: Subject) => {
+    setCurrentSubject(subject);
+  };
+
+  const handleBackToHome = () => {
+    setCurrentSubject(null);
+  };
+
+  // Render the appropriate game based on selected subject
+  const renderGame = () => {
+    switch (currentSubject) {
+      case 'math':
+        return <MathGame onBack={handleBackToHome} />;
+      case 'reading':
+      case 'science':
+      case 'logic':
+        return (
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h2>Coming Soon!</h2>
+            <p>This game is under development.</p>
+            <button
+              onClick={handleBackToHome}
+              style={{
+                padding: '1rem 2rem',
+                fontSize: '1.2rem',
+                cursor: 'pointer',
+                borderRadius: '8px',
+                border: 'none',
+                background: '#667eea',
+                color: 'white',
+                marginTop: '1rem',
+              }}
+            >
+              Back to Home
+            </button>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      {!currentSubject ? (
+        <HomePage onSelectSubject={handleSelectSubject} />
+      ) : (
+        renderGame()
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
