@@ -1,4 +1,4 @@
-import { SubjectCategory } from '../types/games';
+import type { SubjectCategory } from '../types/games';
 import { useProgress } from '../hooks/useProgress';
 import './HomePage.css';
 

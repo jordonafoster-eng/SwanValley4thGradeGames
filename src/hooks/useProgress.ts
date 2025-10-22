@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Subject, SubjectProgress, UserProgress } from '../types/games';
+import type { Subject, SubjectProgress, UserProgress } from '../types/games';
 
 const STORAGE_KEY = 'sv4g_progress';
 

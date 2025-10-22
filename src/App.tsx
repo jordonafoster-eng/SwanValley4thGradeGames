@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { HomePage } from './components/HomePage';
 import { MathGame } from './games/math/MathGame';
-import { Subject } from './types/games';
+import type { Subject } from './types/games';
 import './App.css';
 
 function App() {

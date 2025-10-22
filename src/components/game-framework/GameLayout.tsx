@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Subject, UserProgress } from '../../types/games';
+import type { ReactNode } from 'react';
+import type { Subject, UserProgress } from '../../types/games';
 import './GameLayout.css';
 
 interface GameLayoutProps {

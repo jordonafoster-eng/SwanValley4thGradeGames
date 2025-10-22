@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GameLayout } from '../../components/game-framework/GameLayout';
 import { useProgress } from '../../hooks/useProgress';
-import { GameQuestion } from '../../types/games';
+import type { GameQuestion } from '../../types/games';
 import './MathGame.css';
 
 interface MathGameProps {
