@@ -1,5 +1,5 @@
 import type { SubjectCategory } from '../types/games';
-import { useProgress } from '../hooks/useProgress';
+import { useProgress } from '../contexts/ProgressContext';
 import { useUser } from '../contexts/UserContext';
 import { LoginBar } from './LoginBar';
 import './HomePage.css';
@@ -42,17 +42,7 @@ interface HomePageProps {
 
 export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) => {
   const { user, logout } = useUser();
-  const mathProgress = useProgress('math', user?.username);
-  const readingProgress = useProgress('reading', user?.username);
-  const scienceProgress = useProgress('science', user?.username);
-  const logicProgress = useProgress('logic', user?.username);
-
-  const progressMap = {
-    math: mathProgress.progress,
-    reading: readingProgress.progress,
-    science: scienceProgress.progress,
-    logic: logicProgress.progress,
-  };
+  const { progress } = useProgress();
 
   return (
     <div className="home-page">
@@ -81,9 +71,9 @@ export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) 
       ) : (
         <div className="subjects-grid">
         {subjects.map((subject) => {
-          const progress = progressMap[subject.id];
-          const accuracy = progress.totalAttempts > 0
-            ? Math.round((progress.totalCorrect / progress.totalAttempts) * 100)
+          const subjectProgress = progress[subject.id];
+          const accuracy = subjectProgress.totalAttempts > 0
+            ? Math.round((subjectProgress.totalCorrect / subjectProgress.totalAttempts) * 100)
             : 0;
 
           return (
@@ -101,21 +91,21 @@ export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) 
 
               <div className="progress-info">
                 <div className="level-badge" style={{ backgroundColor: subject.color }}>
-                  Level {progress.level}
+                  Level {subjectProgress.level}
                 </div>
                 <div className="progress-bar">
                   <div
                     className="progress-fill"
                     style={{
-                      width: `${(progress.exp / progress.expToNextLevel) * 100}%`,
+                      width: `${(subjectProgress.exp / subjectProgress.expToNextLevel) * 100}%`,
                       backgroundColor: subject.color
                     }}
                   />
                 </div>
                 <div className="progress-text">
-                  {progress.exp} / {progress.expToNextLevel} XP
+                  {subjectProgress.exp} / {subjectProgress.expToNextLevel} XP
                 </div>
-                {progress.totalAttempts > 0 && (
+                {subjectProgress.totalAttempts > 0 && (
                   <div className="accuracy-text">
                     Accuracy: {accuracy}%
                   </div>

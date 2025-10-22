@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GameLayout } from '../../components/game-framework/GameLayout';
-import { useProgress } from '../../hooks/useProgress';
+import { useProgress } from '../../contexts/ProgressContext';
 import { useUser } from '../../contexts/UserContext';
 import type { GameQuestion } from '../../types/games';
 import './MathGame.css';
@@ -73,7 +73,8 @@ const generateQuestion = (level: number): GameQuestion => {
 
 export const MathGame = ({ onBack }: MathGameProps) => {
   const { user, saveScore } = useUser();
-  const { progress, addCorrectAnswer, addIncorrectAnswer } = useProgress('math', user?.username);
+  const { getSubjectProgress, addCorrectAnswer, addIncorrectAnswer } = useProgress();
+  const progress = getSubjectProgress('math');
   const [currentQuestion, setCurrentQuestion] = useState<GameQuestion>(() =>
     generateQuestion(progress.level)
   );
@@ -93,7 +94,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
 
     if (isCorrect) {
       setFeedback('correct');
-      addCorrectAnswer();
+      addCorrectAnswer('math');
       setStreak(prev => prev + 1);
 
       // Calculate score: base points (10) * level + streak bonus
@@ -113,7 +114,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
       }, 1500);
     } else {
       setFeedback('incorrect');
-      addIncorrectAnswer();
+      addIncorrectAnswer('math');
       setStreak(0);
 
       // Clear feedback after delay
