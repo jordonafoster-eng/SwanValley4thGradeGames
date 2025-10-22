@@ -1,4 +1,4 @@
-# Swan Valley 4th Grade Games
+# Havens Elementary 4th Grade Games
 
 An interactive educational web application featuring learning games for 4th-grade students across multiple subject areas.
 

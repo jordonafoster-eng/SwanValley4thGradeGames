@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Subject, SubjectProgress, UserProgress } from '../types/games';
 
-const STORAGE_KEY = 'sv4g_progress';
+const STORAGE_KEY = 'he4g_progress';
 
 const createInitialProgress = (): UserProgress => ({
   level: 1,

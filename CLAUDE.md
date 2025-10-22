@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Swan Valley 4th Grade Games is an educational web application featuring interactive learning games for 4th-grade students across multiple subject areas: Math, Reading/Language Arts, Science, and Logic/Problem-solving.
+Havens Elementary 4th Grade Games is an educational web application featuring interactive learning games for 4th-grade students across multiple subject areas: Math, Reading/Language Arts, Science, and Logic/Problem-solving.
 
 **Tech Stack:** React 19 + TypeScript + Vite
 
@@ -131,7 +131,7 @@ Standard scoring approach across games:
 ### Data Persistence
 
 - Use localStorage for saving progress and high scores
-- Key format: `sv4g_{gameId}_{dataType}` (e.g., `sv4g_mathquiz_highscore`)
+- Key format: `he4g_{gameId}_{dataType}` (e.g., `he4g_mathquiz_highscore`)
 - Implement graceful fallback if localStorage unavailable
 
 ## TypeScript Guidelines

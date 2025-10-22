@@ -1,5 +1,7 @@
 import type { SubjectCategory } from '../types/games';
 import { useProgress } from '../hooks/useProgress';
+import { useUser } from '../contexts/UserContext';
+import { LoginBar } from './LoginBar';
 import './HomePage.css';
 
 const subjects: SubjectCategory[] = [
@@ -8,36 +10,38 @@ const subjects: SubjectCategory[] = [
     title: 'Math',
     description: 'Addition, subtraction, multiplication, division, and more!',
     icon: '🔢',
-    color: '#4CAF50',
+    color: '#6A0DAD',
   },
   {
     id: 'reading',
     title: 'Reading & Language',
     description: 'Spelling, vocabulary, grammar, and comprehension',
     icon: '📚',
-    color: '#2196F3',
+    color: '#5B2C6F',
   },
   {
     id: 'science',
     title: 'Science',
     description: 'Explore experiments and natural phenomena',
     icon: '🔬',
-    color: '#FF9800',
+    color: '#7B2CBF',
   },
   {
     id: 'logic',
     title: 'Logic & Puzzles',
     description: 'Problem-solving and critical thinking challenges',
     icon: '🧩',
-    color: '#9C27B0',
+    color: '#4B0082',
   },
 ];
 
 interface HomePageProps {
   onSelectSubject: (subject: SubjectCategory['id']) => void;
+  onViewLeaderboard: () => void;
 }
 
-export const HomePage = ({ onSelectSubject }: HomePageProps) => {
+export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) => {
+  const { user, logout } = useUser();
   const mathProgress = useProgress('math');
   const readingProgress = useProgress('reading');
   const scienceProgress = useProgress('science');
@@ -53,11 +57,29 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
   return (
     <div className="home-page">
       <header className="home-header">
-        <h1>🎓 Swan Valley 4th Grade Games</h1>
-        <p className="subtitle">Choose a subject to start learning!</p>
+        <h1>🎓 Havens Elementary 4th Grade Games</h1>
+        <p className="subtitle">
+          {user ? 'Choose a subject to start learning!' : 'Please log in to start playing!'}
+        </p>
+        {user && (
+          <div className="header-actions">
+            <span className="welcome-text">Welcome, {user.username}!</span>
+            <button onClick={onViewLeaderboard} className="leaderboard-nav-button">
+              🏆 Leaderboard
+            </button>
+            <button onClick={logout} className="logout-nav-button">
+              Logout
+            </button>
+          </div>
+        )}
       </header>
 
-      <div className="subjects-grid">
+      {!user ? (
+        <div className="login-container">
+          <LoginBar />
+        </div>
+      ) : (
+        <div className="subjects-grid">
         {subjects.map((subject) => {
           const progress = progressMap[subject.id];
           const accuracy = progress.totalAttempts > 0
@@ -102,7 +124,8 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
             </div>
           );
         })}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

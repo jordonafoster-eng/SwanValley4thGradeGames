@@ -1,32 +1,48 @@
 import { useState } from 'react';
 import { HomePage } from './components/HomePage';
+import { LeaderboardPage } from './components/LeaderboardPage';
 import { MathGame } from './games/math/MathGame';
 import type { Subject } from './types/games';
 import './App.css';
 
+type View = 'home' | 'leaderboard' | Subject;
+
 function App() {
-  const [currentSubject, setCurrentSubject] = useState<Subject | null>(null);
+  const [currentView, setCurrentView] = useState<View>('home');
 
   const handleSelectSubject = (subject: Subject) => {
-    setCurrentSubject(subject);
+    setCurrentView(subject);
   };
 
   const handleBackToHome = () => {
-    setCurrentSubject(null);
+    setCurrentView('home');
   };
 
-  // Render the appropriate game based on selected subject
-  const renderGame = () => {
-    switch (currentSubject) {
+  const handleViewLeaderboard = () => {
+    setCurrentView('leaderboard');
+  };
+
+  // Render the appropriate view
+  const renderView = () => {
+    switch (currentView) {
+      case 'home':
+        return (
+          <HomePage
+            onSelectSubject={handleSelectSubject}
+            onViewLeaderboard={handleViewLeaderboard}
+          />
+        );
+      case 'leaderboard':
+        return <LeaderboardPage onBack={handleBackToHome} />;
       case 'math':
         return <MathGame onBack={handleBackToHome} />;
       case 'reading':
       case 'science':
       case 'logic':
         return (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>Coming Soon!</h2>
-            <p>This game is under development.</p>
+          <div style={{ padding: '2rem', textAlign: 'center', minHeight: '100vh', background: 'linear-gradient(135deg, #5B2C6F 0%, #4B0082 100%)' }}>
+            <h2 style={{ color: '#FFD700', fontSize: '2.5rem', marginTop: '4rem', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Coming Soon!</h2>
+            <p style={{ color: 'white', fontSize: '1.2rem' }}>This game is under development.</p>
             <button
               onClick={handleBackToHome}
               style={{
@@ -34,10 +50,11 @@ function App() {
                 fontSize: '1.2rem',
                 cursor: 'pointer',
                 borderRadius: '8px',
-                border: 'none',
-                background: '#667eea',
-                color: 'white',
+                border: '2px solid #FFD700',
+                background: 'white',
+                color: '#4B0082',
                 marginTop: '1rem',
+                fontWeight: 'bold',
               }}
             >
               Back to Home
@@ -51,11 +68,7 @@ function App() {
 
   return (
     <div className="app">
-      {!currentSubject ? (
-        <HomePage onSelectSubject={handleSelectSubject} />
-      ) : (
-        renderGame()
-      )}
+      {renderView()}
     </div>
   );
 }

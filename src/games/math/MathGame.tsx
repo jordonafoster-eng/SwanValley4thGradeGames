@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GameLayout } from '../../components/game-framework/GameLayout';
 import { useProgress } from '../../hooks/useProgress';
+import { useUser } from '../../contexts/UserContext';
 import type { GameQuestion } from '../../types/games';
 import './MathGame.css';
 
@@ -72,12 +73,14 @@ const generateQuestion = (level: number): GameQuestion => {
 
 export const MathGame = ({ onBack }: MathGameProps) => {
   const { progress, addCorrectAnswer, addIncorrectAnswer } = useProgress('math');
+  const { user, saveScore } = useUser();
   const [currentQuestion, setCurrentQuestion] = useState<GameQuestion>(() =>
     generateQuestion(progress.level)
   );
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [streak, setStreak] = useState(0);
+  const [sessionScore, setSessionScore] = useState(0);
 
   useEffect(() => {
     setCurrentQuestion(generateQuestion(progress.level));
@@ -92,6 +95,15 @@ export const MathGame = ({ onBack }: MathGameProps) => {
       setFeedback('correct');
       addCorrectAnswer();
       setStreak(prev => prev + 1);
+
+      // Calculate score: base points (10) * level + streak bonus
+      const points = 10 * progress.level + (streak > 0 ? streak * 5 : 0);
+      setSessionScore(prev => prev + points);
+
+      // Save score to leaderboard if user is logged in
+      if (user) {
+        saveScore('math', sessionScore + points, progress.level, progress.totalCorrect + 1, progress.totalAttempts + 1);
+      }
 
       // Generate next question after short delay
       setTimeout(() => {
