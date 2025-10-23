@@ -137,7 +137,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
   useEffect(() => {
     const newQuestion = generateQuestion(progress.level);
     setCurrentQuestion(newQuestion);
-    setMultipleChoiceOptions(generateMultipleChoiceOptions(newQuestion.answer));
+    setMultipleChoiceOptions(generateMultipleChoiceOptions(Number(newQuestion.answer)));
     setTimeLeft(30);
     setTimerActive(true);
     setShowHint(false);
@@ -216,7 +216,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
   const nextQuestion = () => {
     const newQuestion = generateQuestion(progress.level);
     setCurrentQuestion(newQuestion);
-    setMultipleChoiceOptions(generateMultipleChoiceOptions(newQuestion.answer));
+    setMultipleChoiceOptions(generateMultipleChoiceOptions(Number(newQuestion.answer)));
     setUserAnswer('');
     setFeedback(null);
     setTimeLeft(30);
@@ -375,7 +375,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
 
           {showHint && (
             <div className="hint-box">
-              🔮 Hint: The answer is between {Math.floor(currentQuestion.answer / 10) * 10} and {Math.ceil(currentQuestion.answer / 10) * 10}
+              🔮 Hint: The answer is between {Math.floor(Number(currentQuestion.answer) / 10) * 10} and {Math.ceil(Number(currentQuestion.answer) / 10) * 10}
             </div>
           )}
 
