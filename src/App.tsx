@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { HomePage } from './components/HomePage';
 import { LeaderboardPage } from './components/LeaderboardPage';
 import { MathGame } from './games/math/MathGame';
+import { ReadingGame } from './games/reading/ReadingGame';
+import { ScienceGame } from './games/science/ScienceGame';
+import { LogicGame } from './games/logic/LogicGame';
 import type { Subject } from './types/games';
 import './App.css';
 
@@ -37,30 +40,11 @@ function App() {
       case 'math':
         return <MathGame onBack={handleBackToHome} />;
       case 'reading':
+        return <ReadingGame onBack={handleBackToHome} />;
       case 'science':
+        return <ScienceGame onBack={handleBackToHome} />;
       case 'logic':
-        return (
-          <div style={{ padding: '2rem', textAlign: 'center', minHeight: '100vh', background: 'linear-gradient(135deg, #5B2C6F 0%, #4B0082 100%)' }}>
-            <h2 style={{ color: '#FFD700', fontSize: '2.5rem', marginTop: '4rem', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>Coming Soon!</h2>
-            <p style={{ color: 'white', fontSize: '1.2rem' }}>This game is under development.</p>
-            <button
-              onClick={handleBackToHome}
-              style={{
-                padding: '1rem 2rem',
-                fontSize: '1.2rem',
-                cursor: 'pointer',
-                borderRadius: '8px',
-                border: '2px solid #FFD700',
-                background: 'white',
-                color: '#4B0082',
-                marginTop: '1rem',
-                fontWeight: 'bold',
-              }}
-            >
-              Back to Home
-            </button>
-          </div>
-        );
+        return <LogicGame onBack={handleBackToHome} />;
       default:
         return null;
     }

@@ -12,6 +12,7 @@ interface MathGameProps {
 type Operation = '+' | '-' | '×' | '÷';
 type PowerUpType = 'hint' | 'timeFreeze' | 'multiplier';
 type GameMode = 'input' | 'multipleChoice';
+type QuestionType = 'arithmetic' | 'fractionEquivalence' | 'fractionCompare' | 'fractionAdd' | 'fractionMultiply' | 'fractionDecimal' | 'multiDigitMultiply' | 'divisionRemainder' | 'wordProblem' | 'multiplicativeComparison' | 'factorPairs' | 'primeComposite' | 'measurement' | 'geometry';
 
 interface PowerUp {
   type: PowerUpType;
@@ -29,64 +30,436 @@ interface Particle {
   emoji: string;
 }
 
+// Helper functions for M-STEP aligned questions
+const gcd = (a: number, b: number): number => {
+  return b === 0 ? a : gcd(b, a % b);
+};
+
+const simplifyFraction = (num: number, den: number): [number, number] => {
+  const divisor = gcd(num, den);
+  return [num / divisor, den / divisor];
+};
+
+const isPrime = (n: number): boolean => {
+  if (n < 2) return false;
+  for (let i = 2; i <= Math.sqrt(n); i++) {
+    if (n % i === 0) return false;
+  }
+  return true;
+};
+
+const getFactorPairs = (n: number): number[][] => {
+  const pairs: number[][] = [];
+  for (let i = 1; i <= Math.sqrt(n); i++) {
+    if (n % i === 0) {
+      pairs.push([i, n / i]);
+    }
+  }
+  return pairs;
+};
+
 const generateQuestion = (level: number): GameQuestion => {
-  // Difficulty scales with level
-  const maxNumber = Math.min(10 + level * 5, 100);
-  const minNumber = level > 5 ? 10 : 1;
+  // Define available question types based on level
+  const availableTypes: QuestionType[] = [];
 
-  const operations: Operation[] = ['+', '-'];
+  // Level 1-2: Basic arithmetic
+  if (level >= 1) {
+    availableTypes.push('arithmetic');
+  }
 
-  // Add multiplication at level 3+
+  // Level 2+: Fraction equivalence (M-STEP priority)
+  if (level >= 2) {
+    availableTypes.push('fractionEquivalence', 'fractionCompare');
+  }
+
+  // Level 3+: Multi-digit multiplication, fraction operations
   if (level >= 3) {
-    operations.push('×');
+    availableTypes.push('multiDigitMultiply', 'fractionAdd', 'fractionDecimal');
   }
 
-  // Add division at level 6+
+  // Level 4+: Division with remainders, word problems
+  if (level >= 4) {
+    availableTypes.push('divisionRemainder', 'wordProblem', 'fractionMultiply');
+  }
+
+  // Level 5+: Factor pairs, multiplicative comparison
+  if (level >= 5) {
+    availableTypes.push('factorPairs', 'multiplicativeComparison', 'primeComposite');
+  }
+
+  // Level 6+: Measurement and geometry
   if (level >= 6) {
-    operations.push('÷');
+    availableTypes.push('measurement', 'geometry');
   }
 
-  const operation = operations[Math.floor(Math.random() * operations.length)];
+  const questionType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
 
-  let num1: number, num2: number, answer: number;
+  switch (questionType) {
+    case 'arithmetic': {
+      const operations: Operation[] = ['+', '-'];
+      if (level >= 3) operations.push('×');
+      if (level >= 6) operations.push('÷');
 
-  switch (operation) {
-    case '+':
-      num1 = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-      num2 = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-      answer = num1 + num2;
-      break;
+      const operation = operations[Math.floor(Math.random() * operations.length)];
+      const maxNumber = Math.min(10 + level * 5, 100);
+      const minNumber = level > 5 ? 10 : 1;
 
-    case '-':
-      num1 = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-      num2 = Math.floor(Math.random() * (num1 - minNumber + 1)) + minNumber;
-      answer = num1 - num2;
-      break;
+      let num1: number, num2: number, answer: number;
 
-    case '×':
-      const multiplyMax = Math.min(12, Math.floor(maxNumber / 5));
-      num1 = Math.floor(Math.random() * multiplyMax) + 1;
-      num2 = Math.floor(Math.random() * multiplyMax) + 1;
-      answer = num1 * num2;
-      break;
+      switch (operation) {
+        case '+':
+          num1 = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+          num2 = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+          answer = num1 + num2;
+          break;
+        case '-':
+          num1 = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+          num2 = Math.floor(Math.random() * (num1 - minNumber + 1)) + minNumber;
+          answer = num1 - num2;
+          break;
+        case '×': {
+          const multiplyMax = Math.min(12, Math.floor(maxNumber / 5));
+          num1 = Math.floor(Math.random() * multiplyMax) + 1;
+          num2 = Math.floor(Math.random() * multiplyMax) + 1;
+          answer = num1 * num2;
+          break;
+        }
+        case '÷':
+          num2 = Math.floor(Math.random() * 12) + 1;
+          answer = Math.floor(Math.random() * 12) + 1;
+          num1 = num2 * answer;
+          break;
+        default:
+          num1 = num2 = answer = 0;
+      }
 
-    case '÷':
-      // Generate division that results in whole numbers
-      num2 = Math.floor(Math.random() * 12) + 1;
-      answer = Math.floor(Math.random() * 12) + 1;
-      num1 = num2 * answer;
-      break;
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `${num1} ${operation} ${num2}`,
+        answer: answer,
+        difficulty: level,
+      };
+    }
+
+    case 'fractionEquivalence': {
+      // Generate equivalent fractions like 1/2 = ?/4
+      const denominators = [2, 3, 4, 5, 6, 8, 10, 12];
+      const baseDen = denominators[Math.floor(Math.random() * denominators.length)];
+      const baseNum = Math.floor(Math.random() * (baseDen - 1)) + 1;
+      const [simpleNum, simpleDen] = simplifyFraction(baseNum, baseDen);
+
+      const multiplier = Math.floor(Math.random() * 3) + 2;
+      const targetNum = simpleNum * multiplier;
+      const targetDen = simpleDen * multiplier;
+
+      if (Math.random() > 0.5) {
+        return {
+          id: `${Date.now()}-${Math.random()}`,
+          question: `${simpleNum}/${simpleDen} = ?/${targetDen}`,
+          answer: targetNum,
+          difficulty: level,
+        };
+      } else {
+        return {
+          id: `${Date.now()}-${Math.random()}`,
+          question: `${targetNum}/${targetDen} = ${simpleNum}/?`,
+          answer: simpleDen,
+          difficulty: level,
+        };
+      }
+    }
+
+    case 'fractionCompare': {
+      // Which is greater: 2/3 or 3/4?
+      const fractions = [
+        [1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [2, 5], [3, 4], [3, 5], [4, 5],
+        [2, 4], [3, 6], [4, 8], [5, 10]
+      ];
+
+      const [num1, den1] = fractions[Math.floor(Math.random() * fractions.length)];
+      let [num2, den2] = fractions[Math.floor(Math.random() * fractions.length)];
+
+      while (num1 / den1 === num2 / den2) {
+        [num2, den2] = fractions[Math.floor(Math.random() * fractions.length)];
+      }
+
+      const val1 = num1 / den1;
+      const val2 = num2 / den2;
+      const answer = val1 > val2 ? 1 : 2;
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `Which is greater? (1) ${num1}/${den1} or (2) ${num2}/${den2}`,
+        answer: answer,
+        difficulty: level,
+      };
+    }
+
+    case 'fractionAdd': {
+      // Add fractions with like denominators
+      const denominators = [4, 5, 6, 8, 10, 12];
+      const den = denominators[Math.floor(Math.random() * denominators.length)];
+      const num1 = Math.floor(Math.random() * (den - 1)) + 1;
+      const num2 = Math.floor(Math.random() * (den - num1));
+      const answer = num1 + num2;
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `${num1}/${den} + ${num2}/${den} = ?/${den}`,
+        answer: answer,
+        difficulty: level,
+      };
+    }
+
+    case 'fractionMultiply': {
+      // Multiply fraction by whole number
+      const denominators = [2, 3, 4, 5, 6, 8];
+      const den = denominators[Math.floor(Math.random() * denominators.length)];
+      const num = 1;
+      const whole = Math.floor(Math.random() * 5) + 2;
+      const answer = whole * num;
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `${whole} × ${num}/${den} = ?/${den}`,
+        answer: answer,
+        difficulty: level,
+      };
+    }
+
+    case 'fractionDecimal': {
+      // Convert fraction to decimal
+      const conversions = [
+        { fraction: '1/10', decimal: 0.1, answer: 1 },
+        { fraction: '3/10', decimal: 0.3, answer: 3 },
+        { fraction: '5/10', decimal: 0.5, answer: 5 },
+        { fraction: '25/100', decimal: 0.25, answer: 25 },
+        { fraction: '50/100', decimal: 0.5, answer: 50 },
+        { fraction: '75/100', decimal: 0.75, answer: 75 },
+      ];
+
+      const conversion = conversions[Math.floor(Math.random() * conversions.length)];
+
+      if (Math.random() > 0.5) {
+        return {
+          id: `${Date.now()}-${Math.random()}`,
+          question: `${conversion.fraction} = 0.? (Enter the missing digits)`,
+          answer: conversion.answer,
+          difficulty: level,
+        };
+      } else {
+        return {
+          id: `${Date.now()}-${Math.random()}`,
+          question: `0.${conversion.decimal.toString().split('.')[1] || '0'} = ?/${conversion.fraction.split('/')[1]}`,
+          answer: Number(conversion.fraction.split('/')[0]),
+          difficulty: level,
+        };
+      }
+    }
+
+    case 'multiDigitMultiply': {
+      // Multi-digit multiplication
+      if (level < 5) {
+        // Single digit × two digit
+        const num1 = Math.floor(Math.random() * 900) + 100;
+        const num2 = Math.floor(Math.random() * 8) + 2;
+        return {
+          id: `${Date.now()}-${Math.random()}`,
+          question: `${num1} × ${num2}`,
+          answer: num1 * num2,
+          difficulty: level,
+        };
+      } else {
+        // Two digit × two digit
+        const num1 = Math.floor(Math.random() * 80) + 10;
+        const num2 = Math.floor(Math.random() * 80) + 10;
+        return {
+          id: `${Date.now()}-${Math.random()}`,
+          question: `${num1} × ${num2}`,
+          answer: num1 * num2,
+          difficulty: level,
+        };
+      }
+    }
+
+    case 'divisionRemainder': {
+      // Division with remainders
+      const divisor = Math.floor(Math.random() * 8) + 2;
+      const quotient = Math.floor(Math.random() * 10) + 1;
+      const remainder = Math.floor(Math.random() * (divisor - 1)) + 1;
+      const dividend = divisor * quotient + remainder;
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `${dividend} ÷ ${divisor} = ${quotient} R? (What is the remainder?)`,
+        answer: remainder,
+        difficulty: level,
+      };
+    }
+
+    case 'wordProblem': {
+      const problems = [
+        {
+          question: 'Sarah has 24 apples. She wants to share them equally among 6 friends. How many apples does each friend get?',
+          answer: 4,
+        },
+        {
+          question: 'A school bus makes 3 trips. Each trip carries 28 students. How many students total?',
+          answer: 84,
+        },
+        {
+          question: 'Jake bought 5 packs of trading cards. Each pack has 12 cards. How many cards total?',
+          answer: 60,
+        },
+        {
+          question: 'A baker made 48 cookies. She put 8 cookies in each box. How many boxes did she fill?',
+          answer: 6,
+        },
+        {
+          question: 'Emma read 15 pages on Monday and 23 pages on Tuesday. How many pages in total?',
+          answer: 38,
+        },
+        {
+          question: 'A garden has 4 rows of flowers. Each row has 9 flowers. How many flowers total?',
+          answer: 36,
+        },
+        {
+          question: 'Tom had 50 marbles. He gave 18 to his friend. How many marbles does Tom have left?',
+          answer: 32,
+        },
+      ];
+
+      const problem = problems[Math.floor(Math.random() * problems.length)];
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: problem.question,
+        answer: problem.answer,
+        difficulty: level,
+      };
+    }
+
+    case 'multiplicativeComparison': {
+      const base = Math.floor(Math.random() * 8) + 2;
+      const multiplier = Math.floor(Math.random() * 4) + 2;
+      const result = base * multiplier;
+
+      const problems = [
+        {
+          question: `Max has ${base} toys. Lisa has ${multiplier} times as many. How many toys does Lisa have?`,
+          answer: result,
+        },
+        {
+          question: `A cat weighs ${base} pounds. A dog weighs ${multiplier} times as much. How many pounds does the dog weigh?`,
+          answer: result,
+        },
+      ];
+
+      const problem = problems[Math.floor(Math.random() * problems.length)];
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: problem.question,
+        answer: problem.answer,
+        difficulty: level,
+      };
+    }
+
+    case 'factorPairs': {
+      const numbers = [12, 16, 18, 20, 24, 28, 30, 32, 36, 40];
+      const num = numbers[Math.floor(Math.random() * numbers.length)];
+      const pairs = getFactorPairs(num);
+      const targetPair = pairs[Math.floor(Math.random() * pairs.length)];
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `${targetPair[0]} × ? = ${num}`,
+        answer: targetPair[1],
+        difficulty: level,
+      };
+    }
+
+    case 'primeComposite': {
+      const numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+      const num = numbers[Math.floor(Math.random() * numbers.length)];
+      const answer = isPrime(num) ? 1 : 2;
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: `Is ${num} (1) Prime or (2) Composite?`,
+        answer: answer,
+        difficulty: level,
+      };
+    }
+
+    case 'measurement': {
+      const problems = [
+        {
+          question: 'A rectangle has length 8 cm and width 5 cm. What is the area in square cm?',
+          answer: 40,
+        },
+        {
+          question: 'A rectangle has length 12 m and width 7 m. What is the perimeter in meters?',
+          answer: 38,
+        },
+        {
+          question: 'How many inches are in 3 feet? (1 foot = 12 inches)',
+          answer: 36,
+        },
+        {
+          question: 'How many centimeters are in 2 meters? (1 meter = 100 cm)',
+          answer: 200,
+        },
+        {
+          question: 'A right angle measures how many degrees?',
+          answer: 90,
+        },
+      ];
+
+      const problem = problems[Math.floor(Math.random() * problems.length)];
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: problem.question,
+        answer: problem.answer,
+        difficulty: level,
+      };
+    }
+
+    case 'geometry': {
+      const problems = [
+        {
+          question: 'How many sides does a quadrilateral have?',
+          answer: 4,
+        },
+        {
+          question: 'How many lines of symmetry does a square have?',
+          answer: 4,
+        },
+        {
+          question: 'How many right angles does a rectangle have?',
+          answer: 4,
+        },
+        {
+          question: 'How many parallel sides does a parallelogram have? (Enter pairs: 1 pair = 1, 2 pairs = 2)',
+          answer: 2,
+        },
+      ];
+
+      const problem = problems[Math.floor(Math.random() * problems.length)];
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: problem.question,
+        answer: problem.answer,
+        difficulty: level,
+      };
+    }
 
     default:
-      num1 = num2 = answer = 0;
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        question: '2 + 2',
+        answer: 4,
+        difficulty: level,
+      };
   }
-
-  return {
-    id: `${Date.now()}-${Math.random()}`,
-    question: `${num1} ${operation} ${num2}`,
-    answer: answer,
-    difficulty: level,
-  };
 };
 
 export const MathGame = ({ onBack }: MathGameProps) => {
@@ -121,13 +494,30 @@ export const MathGame = ({ onBack }: MathGameProps) => {
   // Generate multiple choice options
   const generateMultipleChoiceOptions = (correctAnswer: number) => {
     const options = [correctAnswer];
-    const range = Math.max(10, Math.abs(correctAnswer));
 
-    while (options.length < 4) {
+    // For small answers (like 1-10), use closer range
+    const range = correctAnswer <= 10 ? 5 : Math.max(10, Math.abs(correctAnswer));
+    const maxAttempts = 50; // Prevent infinite loops
+    let attempts = 0;
+
+    while (options.length < 4 && attempts < maxAttempts) {
+      attempts++;
       const offset = Math.floor(Math.random() * range) - Math.floor(range / 2);
       const option = correctAnswer + offset;
+
+      // Ensure option is valid and unique
       if (option !== correctAnswer && !options.includes(option) && option >= 0) {
         options.push(option);
+      }
+    }
+
+    // If we couldn't generate enough unique options, add some manually
+    while (options.length < 4) {
+      const fallback = correctAnswer + options.length;
+      if (!options.includes(fallback) && fallback >= 0) {
+        options.push(fallback);
+      } else {
+        options.push(Math.max(0, correctAnswer - options.length));
       }
     }
 
@@ -375,7 +765,10 @@ export const MathGame = ({ onBack }: MathGameProps) => {
 
           {showHint && (
             <div className="hint-box">
-              🔮 Hint: The answer is between {Math.floor(Number(currentQuestion.answer) / 10) * 10} and {Math.ceil(Number(currentQuestion.answer) / 10) * 10}
+              🔮 Hint: {Number(currentQuestion.answer) <= 20
+                ? `The answer is between ${Math.max(0, Number(currentQuestion.answer) - 2)} and ${Number(currentQuestion.answer) + 2}`
+                : `The answer is between ${Math.floor(Number(currentQuestion.answer) / 10) * 10} and ${Math.ceil(Number(currentQuestion.answer) / 10) * 10 + 10}`
+              }
             </div>
           )}
 
