@@ -108,6 +108,7 @@
 }
 
 .leaderboard-nav-button,
+.admin-nav-button,
 .logout-nav-button {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -122,6 +123,7 @@
 }
 
 .leaderboard-nav-button::before,
+.admin-nav-button::before,
 .logout-nav-button::before {
   content: '';
   position: absolute;
@@ -136,6 +138,7 @@
 }
 
 .leaderboard-nav-button:hover::before,
+.admin-nav-button:hover::before,
 .logout-nav-button:hover::before {
   width: 300px;
   height: 300px;
@@ -153,6 +156,21 @@
   transform: translateY(-3px) scale(1.05);
   box-shadow:
     0 8px 25px rgba(255, 215, 0, 0.6),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-nav-button {
+  background: linear-gradient(135deg, #2c5f8d 0%, #4a7ca8 100%);
+  color: white;
+  box-shadow:
+    0 4px 15px rgba(44, 95, 141, 0.5),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-nav-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 8px 25px rgba(44, 95, 141, 0.6),
     inset 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 

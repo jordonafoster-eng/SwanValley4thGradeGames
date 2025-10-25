@@ -38,9 +38,10 @@ const subjects: SubjectCategory[] = [
 interface HomePageProps {
   onSelectSubject: (subject: SubjectCategory['id']) => void;
   onViewLeaderboard: () => void;
+  onViewAdmin: () => void;
 }
 
-export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) => {
+export const HomePage = ({ onSelectSubject, onViewLeaderboard, onViewAdmin }: HomePageProps) => {
   const { user, logout } = useUser();
   const { progress } = useProgress();
 
@@ -56,6 +57,9 @@ export const HomePage = ({ onSelectSubject, onViewLeaderboard }: HomePageProps) 
             <span className="welcome-text">Welcome, {user.username}!</span>
             <button onClick={onViewLeaderboard} className="leaderboard-nav-button">
               🏆 Leaderboard
+            </button>
+            <button onClick={onViewAdmin} className="admin-nav-button">
+              🛡️ Admin
             </button>
             <button onClick={logout} className="logout-nav-button">
               Logout
