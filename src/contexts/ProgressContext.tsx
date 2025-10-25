@@ -36,13 +36,40 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const [progress, setProgress] = useState<SubjectProgress>(() => {
     const saved = localStorage.getItem(storageKey);
-    return saved ? JSON.parse(saved) : createInitialSubjectProgress();
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Migrate old data: add grammar if it doesn't exist
+        if (!parsed.grammar) {
+          parsed.grammar = createInitialProgress();
+        }
+        return parsed;
+      } catch (e) {
+        console.error('Error parsing progress data:', e);
+        return createInitialSubjectProgress();
+      }
+    }
+    return createInitialSubjectProgress();
   });
 
   // Reload progress when user changes
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
-    setProgress(saved ? JSON.parse(saved) : createInitialSubjectProgress());
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Migrate old data: add grammar if it doesn't exist
+        if (!parsed.grammar) {
+          parsed.grammar = createInitialProgress();
+        }
+        setProgress(parsed);
+      } catch (e) {
+        console.error('Error parsing progress data:', e);
+        setProgress(createInitialSubjectProgress());
+      }
+    } else {
+      setProgress(createInitialSubjectProgress());
+    }
   }, [storageKey]);
 
   // Save progress to localStorage
