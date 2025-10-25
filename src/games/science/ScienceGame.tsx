@@ -180,9 +180,9 @@ export const ScienceGame = ({ onBack }: ScienceGameProps) => {
   const timerRef = useRef<number | null>(null);
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([
-    { type: 'hint', name: 'Telescope', icon: '🔭', description: 'Reveal a hint', cost: 5, count: 3 },
-    { type: 'timeFreeze', name: 'Test Tube', icon: '🧪', description: 'Freeze timer for 10s', cost: 8, count: 2 },
-    { type: 'multiplier', name: 'Lab Coat', icon: '🥼', description: '2x points for 3 questions', cost: 10, count: 1 },
+    { type: 'hint', name: 'Explorer\'s Compass', icon: '🧭', description: 'Reveal a hint', cost: 5, count: 3 },
+    { type: 'timeFreeze', name: 'Norse Frost', icon: '❄️', description: 'Freeze timer for 10s', cost: 8, count: 2 },
+    { type: 'multiplier', name: 'Valhalla Star', icon: '🌟', description: '2x points for 3 questions', cost: 10, count: 1 },
   ]);
 
   useEffect(() => {
@@ -294,9 +294,9 @@ export const ScienceGame = ({ onBack }: ScienceGameProps) => {
 
       if ((progress.totalCorrect + 1) % 5 === 0) {
         setQuestsCompleted(prev => prev + 1);
-        createParticles('🔬');
+        createParticles('⚓');
       } else {
-        createParticles('⭐');
+        createParticles('⚡');
       }
 
       if (user) {
@@ -346,8 +346,8 @@ export const ScienceGame = ({ onBack }: ScienceGameProps) => {
         {/* Quest Header */}
         <div className="quest-header">
           <div className="quest-info">
-            <span className="quest-icon">🔬</span>
-            <span className="quest-title">Science Quest - Level {progress.level}</span>
+            <span className="quest-icon">🧭</span>
+            <span className="quest-title">Viking Discovery Voyage - Level {progress.level}</span>
           </div>
           <div className="resources">
             <div className="resource coins">
@@ -355,11 +355,11 @@ export const ScienceGame = ({ onBack }: ScienceGameProps) => {
               <span className="resource-value">{coins}</span>
             </div>
             <div className="resource quests">
-              <span className="resource-icon">🧬</span>
+              <span className="resource-icon">⚓</span>
               <span className="resource-value">{questsCompleted}</span>
             </div>
             <div className="resource score">
-              <span className="resource-icon">⭐</span>
+              <span className="resource-icon">💎</span>
               <span className="resource-value">{sessionScore}</span>
             </div>
           </div>
@@ -407,7 +407,7 @@ export const ScienceGame = ({ onBack }: ScienceGameProps) => {
 
           {showHint && (
             <div className="hint-box">
-              🔭 Hint: The answer starts with "{String(currentQuestion.answer)[0]}"
+              🧭 Hint: The answer starts with "{String(currentQuestion.answer)[0]}"
             </div>
           )}
 
@@ -433,7 +433,7 @@ export const ScienceGame = ({ onBack }: ScienceGameProps) => {
               {feedback === 'correct' ? (
                 <>
                   <span className="feedback-icon">✓</span>
-                  <span>Discovery Complete! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
+                  <span>Norse Discovery! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
                 </>
               ) : (
                 <>

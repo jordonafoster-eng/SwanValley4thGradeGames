@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Game Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+        button.success {
+            background: #4CAF50;
+        }
+        button.success:hover {
+            background: #45a049;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: rgba(255, 152, 0, 0.3);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        h1 {
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        #status.success {
+            background: rgba(76, 175, 80, 0.3);
+            border-left: 4px solid #4CAF50;
+            display: block;
+        }
+        #status.error {
+            background: rgba(244, 67, 54, 0.3);
+            border-left: 4px solid #f44336;
+            display: block;
+        }
+        .data-list {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗑️ Reset Game Data</h1>
+
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> This will permanently delete all user progress, scores, and leaderboard data. This action cannot be undone!
+        </div>
+
+        <div class="info">
+            <h3>Current Data Keys:</h3>
+            <div id="dataKeys" class="data-list">Loading...</div>
+        </div>
+
+        <button onclick="resetAllData()">🗑️ Reset All Data</button>
+        <button class="success" onclick="location.href='/'">🏠 Back to Game</button>
+
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function displayCurrentKeys() {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('he4g_')) {
+                    keys.push(key);
+                }
+            }
+
+            const dataKeysEl = document.getElementById('dataKeys');
+            if (keys.length === 0) {
+                dataKeysEl.innerHTML = '<em>No game data found</em>';
+            } else {
+                dataKeysEl.innerHTML = keys.map(k => `• ${k}`).join('<br>');
+            }
+
+            return keys;
+        }
+
+        function resetAllData() {
+            const confirmed = confirm(
+                '⚠️ Are you absolutely sure you want to delete ALL game data?\n\n' +
+                'This includes:\n' +
+                '• All user progress\n' +
+                '• All high scores\n' +
+                '• Leaderboard data\n' +
+                '• Current user session\n\n' +
+                'This action CANNOT be undone!'
+            );
+
+            if (!confirmed) return;
+
+            const doubleConfirm = confirm(
+                '⚠️ FINAL CONFIRMATION\n\n' +
+                'Click OK to permanently delete all data.\n' +
+                'Click Cancel to keep your data.'
+            );
+
+            if (!doubleConfirm) return;
+
+            try {
+                const keys = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('he4g_')) {
+                        keys.push(key);
+                    }
+                }
+
+                keys.forEach(key => localStorage.removeItem(key));
+
+                const statusEl = document.getElementById('status');
+                statusEl.className = 'success';
+                statusEl.innerHTML = `
+                    <strong>✅ Success!</strong><br>
+                    Deleted ${keys.length} storage key(s):<br>
+                    <div class="data-list">${keys.map(k => `• ${k}`).join('<br>')}</div>
+                    <p>All game data has been reset. Refresh the page to see a clean slate!</p>
+                `;
+
+                displayCurrentKeys();
+
+            } catch (error) {
+                const statusEl = document.getElementById('status');
+                statusEl.className = 'error';
+                statusEl.innerHTML = `
+                    <strong>❌ Error!</strong><br>
+                    Failed to reset data: ${error.message}
+                `;
+            }
+        }
+
+        // Display current keys on load
+        displayCurrentKeys();
+    </script>
+</body>
+</html>

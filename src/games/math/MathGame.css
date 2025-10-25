@@ -8,7 +8,7 @@
 }
 
 .adventure-theme {
-  background: linear-gradient(180deg, rgba(139, 69, 19, 0.1) 0%, rgba(34, 139, 34, 0.1) 100%);
+  background: linear-gradient(180deg, rgba(30, 58, 95, 0.15) 0%, rgba(44, 95, 141, 0.15) 100%);
   padding: 2rem;
   border-radius: 20px;
 }
@@ -49,11 +49,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
   padding: 1rem 1.5rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  border: 3px solid #FFD700;
+  border: 3px solid #d4af37;
 }
 
 .quest-info {
@@ -112,8 +112,8 @@
 
 .powerup-button {
   position: relative;
-  background: linear-gradient(135deg, #4B0082 0%, #8B008B 100%);
-  border: 3px solid #FFD700;
+  background: linear-gradient(135deg, #2c5f8d 0%, #4a7ca8 100%);
+  border: 3px solid #d4af37;
   border-radius: 15px;
   padding: 0.75rem 1.25rem;
   cursor: pointer;
@@ -162,8 +162,8 @@
 }
 
 .mode-toggle {
-  background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
-  border: 3px solid #FFD700;
+  background: linear-gradient(135deg, #5f9ea0 0%, #7ec8c0 100%);
+  border: 3px solid #d4af37;
   border-radius: 15px;
   padding: 0.75rem 1.25rem;
   color: white;
@@ -175,17 +175,17 @@
 
 .mode-toggle:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 6px 15px rgba(34, 139, 34, 0.5);
+  box-shadow: 0 6px 15px rgba(95, 158, 160, 0.5);
 }
 
 .game-card {
-  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  background: linear-gradient(145deg, #faf8f3 0%, #f5f1e8 100%);
   border-radius: 25px;
   padding: 3rem;
   box-shadow:
     0 15px 40px rgba(0, 0, 0, 0.3),
-    0 0 0 3px #FFD700,
-    inset 0 0 40px rgba(255, 215, 0, 0.1);
+    0 0 0 3px #d4af37,
+    inset 0 0 40px rgba(212, 175, 55, 0.15);
   max-width: 600px;
   width: 100%;
   position: relative;
@@ -207,7 +207,7 @@
   position: absolute;
   top: -15px;
   right: 20px;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #8b0000 0%, #ff6347 100%);
   color: white;
   padding: 0.5rem 1.5rem;
   border-radius: 20px;
@@ -226,8 +226,8 @@
   position: absolute;
   top: -15px;
   left: 20px;
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #4B0082;
+  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+  color: #1e3a5f;
   padding: 0.5rem 1.5rem;
   border-radius: 20px;
   font-weight: bold;
@@ -250,19 +250,19 @@
 
 .timer-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  background: linear-gradient(90deg, #2c7a8d, #5fa8c0);
   transition: width 1s linear;
   border-radius: 20px;
   position: relative;
 }
 
 .timer-bar.warning .timer-fill {
-  background: linear-gradient(90deg, #f44336, #ff6b6b);
+  background: linear-gradient(90deg, #8b0000, #ff4444);
   animation: pulse 0.5s infinite;
 }
 
 .timer-bar.frozen .timer-fill {
-  background: linear-gradient(90deg, #00BCD4, #B2EBF2);
+  background: linear-gradient(90deg, #87ceeb, #b0e0e6);
   animation: none;
 }
 
@@ -280,14 +280,14 @@
 
 /* Hint Box */
 .hint-box {
-  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
+  background: linear-gradient(135deg, #b0d4db 0%, #87c4d0 100%);
   padding: 1rem;
   border-radius: 12px;
   margin-bottom: 1rem;
   text-align: center;
   font-weight: bold;
-  color: #4B0082;
-  border: 2px solid #9C27B0;
+  color: #1e3a5f;
+  border: 2px solid #2c5f8d;
   animation: fadeIn 0.3s;
 }
 
@@ -322,7 +322,7 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(76, 175, 80, 0.2);
+  background: rgba(44, 95, 141, 0.2);
   transform: translate(-50%, -50%);
   transition: width 0.4s, height 0.4s;
 }
@@ -334,8 +334,8 @@
 
 .choice-button:hover:not(:disabled) {
   transform: translateY(-5px) scale(1.05);
-  border-color: #4CAF50;
-  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+  border-color: #2c5f8d;
+  box-shadow: 0 8px 20px rgba(44, 95, 141, 0.3);
 }
 
 .choice-button:disabled {
@@ -371,7 +371,7 @@
 .question-text {
   font-size: 3.5rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #5B2C6F 0%, #4B0082 100%);
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -407,8 +407,8 @@
 }
 
 .answer-input:focus {
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  border-color: #2c5f8d;
+  box-shadow: 0 0 0 3px rgba(44, 95, 141, 0.1);
 }
 
 .answer-input.correct {
@@ -431,15 +431,15 @@
 .submit-button {
   font-size: 1.3rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
-  color: #4B0082;
+  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+  color: #1e3a5f;
   border: none;
   border-radius: 15px;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow:
-    0 6px 20px rgba(255, 215, 0, 0.4),
+    0 6px 20px rgba(212, 175, 55, 0.4),
     inset 0 -3px 7px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
@@ -466,7 +466,7 @@
 .submit-button:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.05);
   box-shadow:
-    0 10px 30px rgba(255, 215, 0, 0.6),
+    0 10px 30px rgba(212, 175, 55, 0.6),
     inset 0 -3px 7px rgba(0, 0, 0, 0.1);
 }
 
@@ -530,7 +530,7 @@
   display: block;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #4CAF50;
+  color: #2c5f8d;
 }
 
 @media (max-width: 768px) {

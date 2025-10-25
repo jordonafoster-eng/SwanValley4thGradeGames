@@ -486,9 +486,9 @@ export const MathGame = ({ onBack }: MathGameProps) => {
   const timerRef = useRef<number | null>(null);
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([
-    { type: 'hint', name: 'Crystal Ball', icon: '🔮', description: 'Reveal a hint', cost: 5, count: 3 },
-    { type: 'timeFreeze', name: 'Time Stone', icon: '⏱️', description: 'Freeze timer for 10s', cost: 8, count: 2 },
-    { type: 'multiplier', name: 'Magic Scroll', icon: '📜', description: '2x points for 3 questions', cost: 10, count: 1 },
+    { type: 'hint', name: 'Rune Stone', icon: '📿', description: 'Reveal a hint', cost: 5, count: 3 },
+    { type: 'timeFreeze', name: 'Norse Frost', icon: '❄️', description: 'Freeze timer for 10s', cost: 8, count: 2 },
+    { type: 'multiplier', name: 'Thor\'s Lightning', icon: '⚡', description: '2x points for 3 questions', cost: 10, count: 1 },
   ]);
 
   // Generate multiple choice options
@@ -638,9 +638,9 @@ export const MathGame = ({ onBack }: MathGameProps) => {
       // Check for quest completion (every 5 correct answers)
       if ((progress.totalCorrect + 1) % 5 === 0) {
         setQuestsCompleted(prev => prev + 1);
-        createParticles('🏆');
+        createParticles('🛡️');
       } else {
-        createParticles('⭐');
+        createParticles('⚡');
       }
 
       // Save score to leaderboard if user is logged in
@@ -697,8 +697,8 @@ export const MathGame = ({ onBack }: MathGameProps) => {
         {/* Quest Header */}
         <div className="quest-header">
           <div className="quest-info">
-            <span className="quest-icon">⚔️</span>
-            <span className="quest-title">Math Quest - Level {progress.level}</span>
+            <span className="quest-icon">⚓</span>
+            <span className="quest-title">Viking Math Voyage - Level {progress.level}</span>
           </div>
           <div className="resources">
             <div className="resource coins">
@@ -706,11 +706,11 @@ export const MathGame = ({ onBack }: MathGameProps) => {
               <span className="resource-value">{coins}</span>
             </div>
             <div className="resource quests">
-              <span className="resource-icon">🏆</span>
+              <span className="resource-icon">🛡️</span>
               <span className="resource-value">{questsCompleted}</span>
             </div>
             <div className="resource score">
-              <span className="resource-icon">⭐</span>
+              <span className="resource-icon">💎</span>
               <span className="resource-value">{sessionScore}</span>
             </div>
           </div>
@@ -765,7 +765,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
 
           {showHint && (
             <div className="hint-box">
-              🔮 Hint: {Number(currentQuestion.answer) <= 20
+              📿 Hint: {Number(currentQuestion.answer) <= 20
                 ? `The answer is between ${Math.max(0, Number(currentQuestion.answer) - 2)} and ${Number(currentQuestion.answer) + 2}`
                 : `The answer is between ${Math.floor(Number(currentQuestion.answer) / 10) * 10} and ${Math.ceil(Number(currentQuestion.answer) / 10) * 10 + 10}`
               }
@@ -815,7 +815,7 @@ export const MathGame = ({ onBack }: MathGameProps) => {
               {feedback === 'correct' ? (
                 <>
                   <span className="feedback-icon">✓</span>
-                  <span>Quest Complete! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
+                  <span>Viking Victory! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
                 </>
               ) : (
                 <>

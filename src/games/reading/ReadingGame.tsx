@@ -408,9 +408,9 @@ export const ReadingGame = ({ onBack }: ReadingGameProps) => {
   const timerRef = useRef<number | null>(null);
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([
-    { type: 'hint', name: 'Magic Quill', icon: '🪶', description: 'Reveal a hint', cost: 5, count: 3 },
-    { type: 'timeFreeze', name: 'Hourglass', icon: '⏳', description: 'Freeze timer for 10s', cost: 8, count: 2 },
-    { type: 'multiplier', name: 'Wisdom Scroll', icon: '📖', description: '2x points for 3 questions', cost: 10, count: 1 },
+    { type: 'hint', name: 'Viking Compass', icon: '🧭', description: 'Reveal a hint', cost: 5, count: 3 },
+    { type: 'timeFreeze', name: 'Odin\'s Hourglass', icon: '⏰', description: 'Freeze timer for 10s', cost: 8, count: 2 },
+    { type: 'multiplier', name: 'Saga Scroll', icon: '📜', description: '2x points for 3 questions', cost: 10, count: 1 },
   ]);
 
   useEffect(() => {
@@ -534,9 +534,9 @@ export const ReadingGame = ({ onBack }: ReadingGameProps) => {
 
       if ((progress.totalCorrect + 1) % 5 === 0) {
         setQuestsCompleted(prev => prev + 1);
-        createParticles('📚');
+        createParticles('📜');
       } else {
-        createParticles('⭐');
+        createParticles('⚡');
       }
 
       if (user) {
@@ -592,8 +592,8 @@ export const ReadingGame = ({ onBack }: ReadingGameProps) => {
         {/* Quest Header */}
         <div className="quest-header">
           <div className="quest-info">
-            <span className="quest-icon">📖</span>
-            <span className="quest-title">Reading Quest - Level {progress.level}</span>
+            <span className="quest-icon">📜</span>
+            <span className="quest-title">Viking Saga Quest - Level {progress.level}</span>
           </div>
           <div className="resources">
             <div className="resource coins">
@@ -601,11 +601,11 @@ export const ReadingGame = ({ onBack }: ReadingGameProps) => {
               <span className="resource-value">{coins}</span>
             </div>
             <div className="resource quests">
-              <span className="resource-icon">📚</span>
+              <span className="resource-icon">📜</span>
               <span className="resource-value">{questsCompleted}</span>
             </div>
             <div className="resource score">
-              <span className="resource-icon">⭐</span>
+              <span className="resource-icon">💎</span>
               <span className="resource-value">{sessionScore}</span>
             </div>
           </div>
@@ -659,7 +659,7 @@ export const ReadingGame = ({ onBack }: ReadingGameProps) => {
 
           {showHint && (
             <div className="hint-box">
-              🪶 Hint: The answer starts with "{String(currentQuestion.answer)[0]}"
+              🧭 Hint: The answer starts with "{String(currentQuestion.answer)[0]}"
             </div>
           )}
 
@@ -706,7 +706,7 @@ export const ReadingGame = ({ onBack }: ReadingGameProps) => {
               {feedback === 'correct' ? (
                 <>
                   <span className="feedback-icon">✓</span>
-                  <span>Quest Complete! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
+                  <span>Saga Complete! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
                 </>
               ) : (
                 <>

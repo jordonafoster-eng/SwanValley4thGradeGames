@@ -218,9 +218,9 @@ export const LogicGame = ({ onBack }: LogicGameProps) => {
   const timerRef = useRef<number | null>(null);
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([
-    { type: 'hint', name: 'Crystal Orb', icon: '🔮', description: 'Reveal a hint', cost: 5, count: 3 },
-    { type: 'timeFreeze', name: 'Puzzle Piece', icon: '🧩', description: 'Freeze timer for 10s', cost: 8, count: 2 },
-    { type: 'multiplier', name: 'Brain Boost', icon: '🧠', description: '2x points for 3 questions', cost: 10, count: 1 },
+    { type: 'hint', name: 'Rune Stone', icon: '🗿', description: 'Reveal a hint', cost: 5, count: 3 },
+    { type: 'timeFreeze', name: 'Norse Frost', icon: '❄️', description: 'Freeze timer for 10s', cost: 8, count: 2 },
+    { type: 'multiplier', name: 'Thor\'s Lightning', icon: '⚡', description: '2x points for 3 questions', cost: 10, count: 1 },
   ]);
 
   useEffect(() => {
@@ -344,9 +344,9 @@ export const LogicGame = ({ onBack }: LogicGameProps) => {
 
       if ((progress.totalCorrect + 1) % 5 === 0) {
         setQuestsCompleted(prev => prev + 1);
-        createParticles('🎯');
+        createParticles('🗿');
       } else {
-        createParticles('⭐');
+        createParticles('⚡');
       }
 
       if (user) {
@@ -396,8 +396,8 @@ export const LogicGame = ({ onBack }: LogicGameProps) => {
         {/* Quest Header */}
         <div className="quest-header">
           <div className="quest-info">
-            <span className="quest-icon">🧩</span>
-            <span className="quest-title">Logic Quest - Level {progress.level}</span>
+            <span className="quest-icon">🗿</span>
+            <span className="quest-title">Viking Riddle Quest - Level {progress.level}</span>
           </div>
           <div className="resources">
             <div className="resource coins">
@@ -405,11 +405,11 @@ export const LogicGame = ({ onBack }: LogicGameProps) => {
               <span className="resource-value">{coins}</span>
             </div>
             <div className="resource quests">
-              <span className="resource-icon">🎯</span>
+              <span className="resource-icon">🗿</span>
               <span className="resource-value">{questsCompleted}</span>
             </div>
             <div className="resource score">
-              <span className="resource-icon">⭐</span>
+              <span className="resource-icon">💎</span>
               <span className="resource-value">{sessionScore}</span>
             </div>
           </div>
@@ -457,7 +457,7 @@ export const LogicGame = ({ onBack }: LogicGameProps) => {
 
           {showHint && (
             <div className="hint-box">
-              🔮 Hint: The answer starts with "{String(currentQuestion.answer)[0]}"
+              🗿 Hint: The answer starts with "{String(currentQuestion.answer)[0]}"
             </div>
           )}
 
@@ -483,7 +483,7 @@ export const LogicGame = ({ onBack }: LogicGameProps) => {
               {feedback === 'correct' ? (
                 <>
                   <span className="feedback-icon">✓</span>
-                  <span>Puzzle Solved! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
+                  <span>Riddle Conquered! +{Math.floor((10 * progress.level + (streak > 0 ? (streak - 1) * 5 : 0) + Math.floor(timeLeft / 3)) * scoreMultiplier)} points</span>
                 </>
               ) : (
                 <>
