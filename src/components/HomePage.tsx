@@ -20,6 +20,13 @@ const subjects: SubjectCategory[] = [
     color: '#5B2C6F',
   },
   {
+    id: 'grammar',
+    title: 'Grammar Rules',
+    description: 'Sentence structure, parts of speech, and punctuation',
+    icon: '📖',
+    color: '#8B4789',
+  },
+  {
     id: 'science',
     title: 'Science',
     description: 'Explore experiments and natural phenomena',

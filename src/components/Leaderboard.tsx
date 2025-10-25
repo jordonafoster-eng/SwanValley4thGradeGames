@@ -3,7 +3,7 @@ import { useUser } from '../contexts/UserContext';
 import type { Subject } from '../types/games';
 import './Leaderboard.css';
 
-type LeaderboardView = 'overall' | 'math' | 'reading' | 'science' | 'logic' | 'recent';
+type LeaderboardView = 'overall' | 'math' | 'reading' | 'grammar' | 'science' | 'logic' | 'recent';
 
 export function Leaderboard() {
   const { getTopScores, getTopScoresBySubject, getRecentAchievements } = useUser();
@@ -17,6 +17,7 @@ export function Leaderboard() {
         return getRecentAchievements(10);
       case 'math':
       case 'reading':
+      case 'grammar':
       case 'science':
       case 'logic':
         return getTopScoresBySubject(view, 10);
@@ -41,6 +42,7 @@ export function Leaderboard() {
     const colors: Record<Subject, string> = {
       math: '#667eea',
       reading: '#f093fb',
+      grammar: '#8B4789',
       science: '#4facfe',
       logic: '#43e97b'
     };

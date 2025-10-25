@@ -13,6 +13,7 @@ export const GameLayout = ({ subject, progress, children, onBack }: GameLayoutPr
   const subjectColors: Record<Subject, string> = {
     math: '#4CAF50',
     reading: '#2196F3',
+    grammar: '#8B4789',
     science: '#FF9800',
     logic: '#9C27B0',
   };
@@ -20,6 +21,7 @@ export const GameLayout = ({ subject, progress, children, onBack }: GameLayoutPr
   const subjectTitles: Record<Subject, string> = {
     math: 'Math',
     reading: 'Reading & Language',
+    grammar: 'Grammar Rules',
     science: 'Science',
     logic: 'Logic & Puzzles',
   };

@@ -1,4 +1,4 @@
-export type Subject = 'math' | 'reading' | 'science' | 'logic';
+export type Subject = 'math' | 'reading' | 'science' | 'logic' | 'grammar';
 
 export interface UserProgress {
   level: number;
@@ -13,6 +13,7 @@ export interface SubjectProgress {
   reading: UserProgress;
   science: UserProgress;
   logic: UserProgress;
+  grammar: UserProgress;
 }
 
 export interface GameQuestion {

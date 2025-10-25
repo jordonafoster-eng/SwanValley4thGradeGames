@@ -14,6 +14,7 @@ const createInitialProgress = (): UserProgress => ({
 const createInitialSubjectProgress = (): SubjectProgress => ({
   math: createInitialProgress(),
   reading: createInitialProgress(),
+  grammar: createInitialProgress(),
   science: createInitialProgress(),
   logic: createInitialProgress(),
 });

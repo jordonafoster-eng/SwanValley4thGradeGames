@@ -17,6 +17,7 @@ const createInitialSubjectProgress = (): SubjectProgress => ({
   reading: createInitialProgress(),
   science: createInitialProgress(),
   logic: createInitialProgress(),
+  grammar: createInitialProgress(),
 });
 
 interface ProgressContextType {

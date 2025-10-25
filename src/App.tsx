@@ -5,6 +5,7 @@ import { AdminLogin } from './components/AdminLogin';
 import { AdminDashboard } from './components/AdminDashboard';
 import { MathGame } from './games/math/MathGame';
 import { ReadingGame } from './games/reading/ReadingGame';
+import { GrammarGame } from './games/grammar/GrammarGame';
 import { ScienceGame } from './games/science/ScienceGame';
 import { LogicGame } from './games/logic/LogicGame';
 import { useAdmin } from './contexts/AdminContext';
@@ -67,6 +68,8 @@ function App() {
         return <MathGame onBack={handleBackToHome} />;
       case 'reading':
         return <ReadingGame onBack={handleBackToHome} />;
+      case 'grammar':
+        return <GrammarGame onBack={handleBackToHome} />;
       case 'science':
         return <ScienceGame onBack={handleBackToHome} />;
       case 'logic':

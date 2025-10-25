@@ -210,7 +210,7 @@ export const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                   </div>
 
                   <div className="user-stats-grid">
-                    {(['math', 'reading', 'science', 'logic'] as const).map((subject) => {
+                    {(['math', 'reading', 'grammar', 'science', 'logic'] as const).map((subject) => {
                       const progress = getSubjectProgress(user.username, subject);
                       return (
                         <div key={subject} className="subject-stat">
@@ -229,7 +229,7 @@ export const AdminDashboard = ({ onBack }: AdminDashboardProps) => {
                   {selectedUser === user.username && (
                     <div className="user-details">
                       <h4>Detailed Progress</h4>
-                      {(['math', 'reading', 'science', 'logic'] as const).map((subject) => {
+                      {(['math', 'reading', 'grammar', 'science', 'logic'] as const).map((subject) => {
                         const progress = getSubjectProgress(user.username, subject);
                         return (
                           <div key={subject} className="subject-detail">
